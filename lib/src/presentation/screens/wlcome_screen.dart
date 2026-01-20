@@ -1,10 +1,12 @@
+import 'package:bloc_app/src/blocs/blocs.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
 import '../../routes/route_pages.dart';
+import '../widgets/widgets.dart';
 
 class WlcomeScreen extends StatelessWidget {
   const WlcomeScreen({super.key});
@@ -22,27 +24,36 @@ class WlcomeScreen extends StatelessWidget {
             style: Theme.of(context).textTheme.titleLarge,
           ),
 
-          Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 15.0),
-            child: Column(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                FlutterSocialButton(
-                  onTap: () {},
-                  buttonType: ButtonType.facebook,
+          BlocConsumer<LoginBloc, LoginState>(
+            builder: (context, state) {
+              if (state is LoginLoading) {
+                return Center(child: CircularProgressIndicator());
+              }
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 15.0),
+                child: Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    FlutterSocialButton(
+                      onTap: () {},
+                      buttonType: ButtonType.facebook,
+                    ),
+                    const Gap(10),
+                    FlutterSocialButton(
+                      onTap: () {},
+                      buttonType: ButtonType.twitter,
+                    ),
+                    const Gap(10),
+                    FlutterSocialButton(
+                      onTap: () =>
+                          context.read<LoginBloc>().add(RequestGoogleLogin()),
+                      buttonType: ButtonType.google,
+                    ),
+                  ],
                 ),
-                const Gap(10),
-                FlutterSocialButton(
-                  onTap: () {},
-                  buttonType: ButtonType.twitter,
-                ),
-                const Gap(10),
-                FlutterSocialButton(
-                  onTap: () {},
-                  buttonType: ButtonType.google,
-                ),
-              ],
-            ),
+              );
+            },
+            listener: (context, state) {},
           ),
 
           Column(
@@ -59,9 +70,9 @@ class WlcomeScreen extends StatelessWidget {
                     ),
                   ),
                   TextButton(
-                    onPressed: ()=> context.pushNamed(Routes.LOGIN_ROUTE),
+                    onPressed: () => context.pushNamed(Routes.LOGIN_ROUTE),
                     child: Text(
-                      'Signin',
+                      'SignIn',
                       style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
@@ -69,22 +80,9 @@ class WlcomeScreen extends StatelessWidget {
                   ),
                 ],
               ),
-
-
-              InkWell(
-                onTap: ()=> context.pushNamed(Routes.REGISTER_ROUTE),
-                child: Container(
-                  height: 80.h,
-                  color: Theme.of(context).colorScheme.onPrimaryContainer,
-                  child: Center(
-                    child: Text(
-                      'Create An Account',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.onSecondary,
-                      ),
-                    ),
-                  ),
-                ),
+              FullWidthButton(
+                buttonText: 'Create An Account',
+                onTap: () => context.pushNamed(Routes.REGISTER_ROUTE),
               ),
             ],
           ),

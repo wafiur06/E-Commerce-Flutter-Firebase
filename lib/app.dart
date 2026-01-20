@@ -1,17 +1,26 @@
-import 'package:bloc_app/src/blocs/blocs.dart';
+import 'package:bloc_app/src/data/repository/auth_repository.dart';
 import 'package:bloc_app/src/routes/route_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'theme/theme.dart';
 
+import 'src/blocs/blocs.dart';
+
 class BlocEcommerceApp extends StatelessWidget {
   const BlocEcommerceApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(providers: [
-      BlocProvider(create: (context)=> SplashCubit()..startSplash()),
+    return MultiRepositoryProvider(providers: [
+      RepositoryProvider(create: (context)=> AuthRepository())
+    ], child: MultiBlocProvider(providers: [
+      BlocProvider(create: (context) =>
+      SplashCubit()
+        ..startSplash()),
+      BlocProvider(create: (context) => RememberSwitchCubit()),
+      BlocProvider(create: (context) => LoginBloc(context.read<AuthRepository>())),
+      BlocProvider(create: (context) => SignupBloc()),
 
     ], child: ScreenUtilInit(
       designSize: const Size(360, 690),
@@ -25,6 +34,7 @@ class BlocEcommerceApp extends StatelessWidget {
           routerConfig: RoutePages.ROUTER,
         );
       },
+    ),
     ),);
   }
 }
