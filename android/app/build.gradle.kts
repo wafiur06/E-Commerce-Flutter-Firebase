@@ -27,10 +27,11 @@ android {
         applicationId = "com.example.bloc_app"
         // You can update the following values to match your application needs.
         // For more information, see: https://flutter.dev/to/review-gradle-config.
-        minSdk = 21
+        minSdk = flutter.minSdkVersion
         targetSdk = flutter.targetSdkVersion
         versionCode = flutter.versionCode
         versionName = flutter.versionName
+        multiDexEnabled = true
     }
 
     buildTypes {
@@ -44,4 +45,12 @@ android {
 
 flutter {
     source = "../.."
+}
+
+
+dependencies {
+// Correct spelling: "release" instead of "relase"
+    implementation("com.facebook.android:facebook-login:latest.release")
+    implementation("com.android.support:multidex:2.0.1")
+
 }
