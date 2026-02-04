@@ -1,9 +1,11 @@
 
 import 'package:bloc/bloc.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:meta/meta.dart';
 
-import '../../data/repository/auth_repository.dart';
+import '../../data/repository/repository.dart';
+
 
 part 'login_event.dart';
 part 'login_state.dart';
@@ -12,17 +14,67 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   final AuthRepository repository;
 
   LoginBloc(this.repository) : super(LoginInitial()) {
+
     on<RequestGoogleLogin>((event, emit) async {
-      //function for google login
-      try{
-        emit(LoginLoading());
+      emit(LoginLoading());
+      try {
+
         final user = await repository.signInWithGoogle();
-        debugPrint('User: ${user?.displayName}');
-        emit(LoginSuccess());
-      }catch (e){
+
+        // FIX: Check if the user is null before emitting Success
+        if (user != null) {
+          debugPrint('User: ${user.displayName}');
+          emit(LoginSuccess());
+        } else {
+          // If repository returned null, it means sign-in was canceled or failed
+          emit(LoginFailed("Google Sign-In was unsuccessful or canceled."));
+        }
+
+      } catch (e) {
         debugPrint(e.toString());
         emit(LoginFailed(e.toString()));
       }
+    });
+
+
+    on<RequestFacebookLogin>((event, emit) async {
+      emit(LoginLoading());
+
+      try {
+        final user = await repository.signInWithFacebook();
+
+        // FIX: Check if the user is null before emitting Success
+        if (user != null) {
+          debugPrint('User: ${user.displayName}');
+          emit(LoginSuccess());
+        } else {
+          // If repository returned null, it means sign-in was canceled or failed
+          emit(LoginFailed("Facebook Sign-In was unsuccessful or canceled."));
+        }
+
+      } catch (e) {
+        debugPrint(e.toString());
+        emit(LoginFailed(e.toString()));
+      }
+    });
+
+
+    on<RequestTwitterLogin>((event, emit) async {
+      emit(LoginLoading());
+      try{
+        final user = await repository.signInWithTwitter();
+        debugPrint('User: ${user?.displayName}');
+        if (user != null) {
+          debugPrint('User: ${user.displayName}');
+          emit(LoginSuccess());
+        } else{
+          emit(LoginFailed("Twitter Sign-In was unsuccessful or canceled."));
+        }
+      }catch(e){
+        debugPrint(e.toString());
+        emit(LoginFailed(e.toString()));
+      }
+
     });
   }
 }

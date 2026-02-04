@@ -5,6 +5,18 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return Scaffold(
+      appBar: AppBar(),
+      body: Column(
+        children: [
+          ListTile(
+            title: Text('Hello! Bloc'),
+            titleTextStyle: Theme.of(context).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+            subtitle: Text('Welcome to Laza'),
+            subtitleTextStyle: Theme.of(context).textTheme.labelMedium,
+          )
+        ],
+      ),
+    );
   }
 }

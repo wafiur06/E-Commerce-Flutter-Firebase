@@ -30,7 +30,7 @@
             <intent-filter>
                 <data
                     android:host="login"
-                    android:scheme="bloc_ecommerce" />
+                    android:scheme="bloc-ecommerce" />
                 <action android:name="android.intent.action.VIEW" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <category android:name="android.intent.category.BROWSABLE" />

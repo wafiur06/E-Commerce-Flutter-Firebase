@@ -4,3 +4,7 @@ part of 'login_bloc.dart';
 abstract class LoginEvent {}
 
 class RequestGoogleLogin extends LoginEvent{}
+
+class RequestFacebookLogin extends LoginEvent{}
+
+class RequestTwitterLogin extends LoginEvent{}

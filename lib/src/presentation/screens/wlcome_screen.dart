@@ -2,6 +2,7 @@ import 'package:bloc_app/src/blocs/blocs.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 
@@ -35,12 +36,12 @@ class WlcomeScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     FlutterSocialButton(
-                      onTap: () {},
+                      onTap: () => (context).read<LoginBloc>().add(RequestFacebookLogin()),
                       buttonType: ButtonType.facebook,
                     ),
                     const Gap(10),
                     FlutterSocialButton(
-                      onTap: () {},
+                      onTap: () => (context).read<LoginBloc>().add(RequestTwitterLogin()),
                       buttonType: ButtonType.twitter,
                     ),
                     const Gap(10),
@@ -53,7 +54,14 @@ class WlcomeScreen extends StatelessWidget {
                 ),
               );
             },
-            listener: (context, state) {},
+            listener: (context, state) {
+              if (state is LoginSuccess) {
+                Fluttertoast.showToast(msg: 'Login Successful');
+                Future.delayed(const Duration(milliseconds: 500),(){
+                  context.goNamed(Routes.HOME_ROUTE);
+                });
+              }
+            },
           ),
 
           Column(
