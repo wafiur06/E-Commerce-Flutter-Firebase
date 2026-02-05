@@ -19,7 +19,6 @@ class SignupScreen extends StatelessWidget {
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(),
-
       body: SingleChildScrollView(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 20),
         child: Column(
@@ -29,14 +28,16 @@ class SignupScreen extends StatelessWidget {
               "Sign Up",
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
+                fontWeight: FontWeight.bold,
               ),
             ),
+            const Gap(30),
             BlocConsumer<SignupBloc, SignupState>(
               listener: (context, state) {
-                if(state is SignUpSuccess){
+                if (state is SignUpSuccess) {
                   context.goNamed(Routes.HOME_ROUTE);
                 }
-                if(state is SignUpFailure){
+                if (state is SignUpFailure) {
                   Fluttertoast.showToast(msg: state.message);
                 }
               },
@@ -68,7 +69,6 @@ class SignupScreen extends StatelessWidget {
                                 }
                               },
                             ),
-
                             TextFormField(
                               controller: state.emailController,
                               decoration: InputDecoration(
@@ -88,7 +88,6 @@ class SignupScreen extends StatelessWidget {
                                 }
                               },
                             ),
-
                             TextFormField(
                               controller: state.passwordController,
                               decoration: InputDecoration(
@@ -116,7 +115,8 @@ class SignupScreen extends StatelessWidget {
                                 ),
                               ),
                               validator: (value) {
-                                if (value != state.passwordController.text || value == null) {
+                                if (value != state.passwordController.text ||
+                                    value == null) {
                                   return 'Password Does not Match';
                                 } else {
                                   return null;
@@ -133,7 +133,6 @@ class SignupScreen extends StatelessWidget {
                 );
               },
             ),
-
             const Gap(20),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -151,22 +150,25 @@ class SignupScreen extends StatelessWidget {
                 ),
               ],
             ),
-
-            const Gap(445),
-            BlocBuilder<SignupBloc, SignupState>(
-              builder: (context, state) {
-                return FullWidthButton(
-                  buttonText: 'Sign Up',
-                  buttonChild: state is SignUpLoading
-                      ? LoadingAnimationWidget.discreteCircle(
-                          color: theme.colorScheme.onPrimaryContainer,
-                          size: 35.w,
-                        )
-                      : null,
-                  onTap: () {
-                    if (state is SignupInitial) {
-                      if (formKey.currentState!.validate()) {
-                        context.read<SignupBloc>().add(
+          ],
+        ),
+      ),
+      bottomNavigationBar: Padding(
+        padding: const EdgeInsets.only(left: 0, right: 0, bottom: 0, top: 16),
+        child: BlocBuilder<SignupBloc, SignupState>(
+          builder: (context, state) {
+            return FullWidthButton(
+              buttonText: 'Sign Up',
+              buttonChild: state is SignUpLoading
+                  ? LoadingAnimationWidget.discreteCircle(
+                      color: theme.colorScheme.onPrimary,
+                      size: 35.w,
+                    )
+                  : null,
+              onTap: () {
+                if (state is SignupInitial) {
+                  if (formKey.currentState!.validate()) {
+                    context.read<SignupBloc>().add(
                           RequestEmailSignUp(
                             username: state.usernameController.text,
                             email: state.emailController.text,
@@ -175,13 +177,11 @@ class SignupScreen extends StatelessWidget {
                                 state.confirmPasswordController.text,
                           ),
                         );
-                      }
-                    }
-                  },
-                );
+                  }
+                }
               },
-            ),
-          ],
+            );
+          },
         ),
       ),
     );

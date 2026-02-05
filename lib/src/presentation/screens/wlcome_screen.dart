@@ -24,11 +24,10 @@ class WlcomeScreen extends StatelessWidget {
             "Let's Get Started",
             style: Theme.of(context).textTheme.titleLarge,
           ),
-
           BlocConsumer<LoginBloc, LoginState>(
             builder: (context, state) {
               if (state is LoginLoading) {
-                return Center(child: CircularProgressIndicator());
+                return const Center(child: CircularProgressIndicator());
               }
               return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 15.0),
@@ -36,12 +35,14 @@ class WlcomeScreen extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     FlutterSocialButton(
-                      onTap: () => (context).read<LoginBloc>().add(RequestFacebookLogin()),
+                      onTap: () =>
+                          (context).read<LoginBloc>().add(RequestFacebookLogin()),
                       buttonType: ButtonType.facebook,
                     ),
                     const Gap(10),
                     FlutterSocialButton(
-                      onTap: () => (context).read<LoginBloc>().add(RequestTwitterLogin()),
+                      onTap: () =>
+                          (context).read<LoginBloc>().add(RequestTwitterLogin()),
                       buttonType: ButtonType.twitter,
                     ),
                     const Gap(10),
@@ -57,42 +58,41 @@ class WlcomeScreen extends StatelessWidget {
             listener: (context, state) {
               if (state is LoginSuccess) {
                 Fluttertoast.showToast(msg: 'Login Successful');
-                Future.delayed(const Duration(milliseconds: 500),(){
+                Future.delayed(const Duration(milliseconds: 500), () {
                   context.goNamed(Routes.HOME_ROUTE);
                 });
               }
             },
           ),
-
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
+        ],
+      ),
+      bottomNavigationBar: Column(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.center,
+        children: [
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Text(
-                    'Already have an account?',
-                    style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+              Text(
+                'Already have an account?',
+                style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                       color: Theme.of(context).colorScheme.onSurface,
                     ),
-                  ),
-                  TextButton(
-                    onPressed: () => context.pushNamed(Routes.LOGIN_ROUTE),
-                    child: Text(
-                      'SignIn',
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+              ),
+              TextButton(
+                onPressed: () => context.pushNamed(Routes.LOGIN_ROUTE),
+                child: Text(
+                  'SignIn',
+                  style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
-                    ),
-                  ),
-                ],
-              ),
-              FullWidthButton(
-                buttonText: 'Create An Account',
-                onTap: () => context.pushNamed(Routes.REGISTER_ROUTE),
+                ),
               ),
             ],
+          ),
+          FullWidthButton(
+            buttonText: 'Create An Account',
+            onTap: () => context.pushNamed(Routes.REGISTER_ROUTE),
           ),
         ],
       ),
