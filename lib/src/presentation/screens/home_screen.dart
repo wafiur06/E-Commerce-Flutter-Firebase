@@ -1,3 +1,6 @@
+import 'package:bloc_app/src/blocs/profile/profile_bloc.dart';
+import 'package:bloc_app/src/data/preference/local_preference.dart';
+import 'package:bloc_app/src/data/utils/values.dart';
 import 'package:bloc_app/src/routes/route_pages.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -11,7 +14,6 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final layout = MediaQuery.of(context).size;
     final theme = Theme.of(context);
     return Scaffold(
       appBar: AppBar(
@@ -38,13 +40,13 @@ class HomeScreen extends StatelessWidget {
       body: Column(
         children: [
           ListTile(
-            title: Text('Hello! Bloc'),
-            titleTextStyle: Theme.of(
-              context,
-            ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
-            subtitle: Text('Welcome to Laza'),
-            subtitleTextStyle: Theme.of(context).textTheme.labelMedium,
-          ),
+              title: Text('${Values.GREETINGS} ${LocalPreferences.getString('username')}'),
+              titleTextStyle: Theme.of(
+                context,
+              ).textTheme.titleLarge?.copyWith(fontWeight: FontWeight.bold),
+              subtitle: Text(Values.WELCOME_SUB_TITLE),
+              subtitleTextStyle: Theme.of(context).textTheme.labelMedium,
+            ),
         ],
       ),
     );

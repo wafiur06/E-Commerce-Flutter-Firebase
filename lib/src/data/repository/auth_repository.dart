@@ -1,4 +1,5 @@
 import 'package:bloc_app/src/data/models/user_model.dart';
+import 'package:bloc_app/src/data/utils/asset_manager.dart';
 import 'package:bloc_app/src/data/utils/constants.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -7,9 +8,12 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter/foundation.dart';
 import 'package:twitter_login/twitter_login.dart';
 
+import '../preference/local_preference.dart';
+
 class AuthRepository {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FacebookAuth _facebookAuth = FacebookAuth.instance;
 
   /// Starts the Google Sign-In process
   Future<User?> signInWithGoogle() async {
@@ -104,14 +108,25 @@ class AuthRepository {
   }
 
   Future<User?> signInWithEmail(String email, String password) async {
-    try{
-     final userCredential = await _auth.signInWithEmailAndPassword(email: email, password: password);
-     return userCredential.user;
-    }catch(e){
+    try {
+      final userCredential = await _auth.signInWithEmailAndPassword(
+        email: email,
+        password: password,
+      );
+      final user = userCredential.user;
+      LocalPreferences.setString('username', user?.displayName ?? 'Unknown');
+      LocalPreferences.setString('email', user?.email ?? '');
+      LocalPreferences.setString(
+        'photoUrl',
+        user?.photoURL ?? AssetManager.THUMBNAIL_PLACEHOLDER,
+      );
+      LocalPreferences.setString('phoneNumber', user?.phoneNumber ?? '');
+
+      return user;
+    } catch (e) {
       throw Exception(e);
     }
   }
-
 
   Future<void> createUserInDatabase(User user, String? username) async {
     final data = UserModel(
@@ -126,14 +141,31 @@ class AuthRepository {
     ) {
       debugPrint('User created in database ${user.uid}');
     });
+
+    LocalPreferences.setString(
+      'username',
+      user.displayName ?? username ?? 'Unknown',
+    );
+    LocalPreferences.setString('email', user.email ?? '');
+    LocalPreferences.setString(
+      'photoUrl',
+      user.photoURL ?? AssetManager.THUMBNAIL_PLACEHOLDER,
+    );
+    LocalPreferences.setString('phoneNumber', user.phoneNumber ?? '');
   }
+
+  //
 
   Future<void> signoutUser() async {
     await _auth.signOut();
   }
 
-  Future<User?> signUpWIthEmail(String email, String password, String username) async {
-    try{
+  Future<User?> signUpWIthEmail(
+    String email,
+    String password,
+    String username,
+  ) async {
+    try {
       final credintial = await _auth.createUserWithEmailAndPassword(
         email: email,
         password: password,
@@ -144,7 +176,7 @@ class AuthRepository {
       }
 
       return user;
-    }catch(e){
+    } catch (e) {
       debugPrint('Error signing up with email: $e');
       throw Exception(e);
     }

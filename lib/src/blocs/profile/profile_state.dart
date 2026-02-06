@@ -1,8 +1,12 @@
 part of 'profile_bloc.dart';
 
 @immutable
-sealed class ProfileState {}
+abstract class ProfileState extends Equatable {
+  @override
+  // TODO: implement props
+  List<Object?> get props => [];
+}
 
-final class ProfileInitial extends ProfileState {}
+class ProfileInitial extends ProfileState {}
 
-class ProfileFetchedSuccess extends ProfileState{}
+class ProfileFetchSuccess extends ProfileState {}
