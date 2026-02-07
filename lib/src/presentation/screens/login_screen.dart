@@ -1,3 +1,4 @@
+import 'package:bloc_app/src/utils/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -26,7 +27,7 @@ class LoginScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Sign In",
+              Values.SIGN_IN_BUTTON_TEXT,
               style: theme.textTheme.titleLarge?.copyWith(
                 color: theme.colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -128,7 +129,7 @@ class LoginScreen extends StatelessWidget {
               TextButton(
                 onPressed: () => context.pushNamed(Routes.REGISTER_ROUTE),
                 child: Text(
-                  'SignUp',
+                  Values.SIGN_UP_BUTTON_TEXT,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                     color: Theme.of(context).colorScheme.onPrimaryContainer,
                   ),
@@ -139,7 +140,7 @@ class LoginScreen extends StatelessWidget {
           BlocBuilder<LoginBloc, LoginState>(
             builder: (context, state) {
               return FullWidthButton(
-                buttonText: 'Sign In',
+                buttonText: Values.SIGN_IN_BUTTON_TEXT,
                 buttonChild: state is LoginLoading
                     ? LoadingAnimationWidget.discreteCircle(
                         color: theme.colorScheme.onPrimary,

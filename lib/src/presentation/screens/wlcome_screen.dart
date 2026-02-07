@@ -1,4 +1,5 @@
 import 'package:bloc_app/src/blocs/blocs.dart';
+import 'package:bloc_app/src/utils/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_social_button/flutter_social_button.dart';
@@ -82,7 +83,7 @@ class WlcomeScreen extends StatelessWidget {
               TextButton(
                 onPressed: () => context.pushNamed(Routes.LOGIN_ROUTE),
                 child: Text(
-                  'SignIn',
+                  Values.SIGN_IN_BUTTON_TEXT,
                   style: Theme.of(context).textTheme.labelLarge?.copyWith(
                         color: Theme.of(context).colorScheme.onPrimaryContainer,
                       ),
@@ -91,7 +92,7 @@ class WlcomeScreen extends StatelessWidget {
             ],
           ),
           FullWidthButton(
-            buttonText: 'Create An Account',
+            buttonText: Values.CREATE_ACCOUNT_TEXT,
             onTap: () => context.pushNamed(Routes.REGISTER_ROUTE),
           ),
         ],

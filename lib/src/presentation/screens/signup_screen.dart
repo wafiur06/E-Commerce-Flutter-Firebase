@@ -1,4 +1,5 @@
 import 'package:bloc_app/src/blocs/authentication/signup_bloc.dart';
+import 'package:bloc_app/src/utils/values.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -25,7 +26,7 @@ class SignupScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Text(
-              "Sign Up",
+              Values.SIGN_UP_BUTTON_TEXT,
               style: Theme.of(context).textTheme.titleLarge?.copyWith(
                 color: Theme.of(context).colorScheme.onSurface,
                 fontWeight: FontWeight.bold,
@@ -158,7 +159,7 @@ class SignupScreen extends StatelessWidget {
         child: BlocBuilder<SignupBloc, SignupState>(
           builder: (context, state) {
             return FullWidthButton(
-              buttonText: 'Sign Up',
+              buttonText: Values.SIGN_UP_BUTTON_TEXT,
               buttonChild: state is SignUpLoading
                   ? LoadingAnimationWidget.discreteCircle(
                       color: theme.colorScheme.onPrimary,
