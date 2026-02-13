@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final productModel = productModelFromJson(jsonString);
-
 import 'dart:convert';
 
 ProductModel productModelFromJson(String str) => ProductModel.fromJson(json.decode(str));
@@ -9,29 +5,38 @@ ProductModel productModelFromJson(String str) => ProductModel.fromJson(json.deco
 String productModelToJson(ProductModel data) => json.encode(data.toJson());
 
 class ProductModel {
+   String productId;
   final String? productName;
   final double? productPrice;
   final List<ImageGallery>? imageGallery;
   final List<Varient>? varient;
   final String? productDetails;
   final String? brand;
+  final String? categoryId;
+  // final double? vatSd;
 
   ProductModel({
+    required this.productId,
     this.productName,
     this.productPrice,
     this.imageGallery,
     this.varient,
     this.productDetails,
     this.brand,
+    this.categoryId,
+    // this.vatSd
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
-    productName: json["product_name"],
-    productPrice: json["product_price"],
-    imageGallery: json["image_gallery"] == null ? [] : List<ImageGallery>.from(json["image_gallery"]!.map((x) => ImageGallery.fromJson(x))),
-    varient: json["varient"] == null ? [] : List<Varient>.from(json["varient"]!.map((x) => Varient.fromJson(x))),
-    productDetails: json["product_details"],
-    brand: json["brand"],
+      productId: '',
+      productName: json["product_name"],
+      productPrice: json["product_price"],
+      imageGallery: json["image_gallery"] == null ? [] : List<ImageGallery>.from(json["image_gallery"]!.map((x) => ImageGallery.fromJson(x))),
+      varient: json["varient"] == null ? [] : List<Varient>.from(json["varient"]!.map((x) => Varient.fromJson(x))),
+      productDetails: json["product_details"],
+      brand: json["brand"],
+      categoryId: json["category_id"],
+      // vatSd: json['vat_sd'].toDouble()
   );
 
   Map<String, dynamic> toJson() => {
@@ -41,6 +46,8 @@ class ProductModel {
     "varient": varient == null ? [] : List<dynamic>.from(varient!.map((x) => x.toJson())),
     "product_details": productDetails,
     "brand": brand,
+    "category_id": categoryId,
+    // "vat_sd": vatSd
   };
 }
 
@@ -66,7 +73,7 @@ class ImageGallery {
 
 class Varient {
   final String? category;
-  final List<Item>? items;
+  final List<VarientItem>? items;
 
   Varient({
     this.category,
@@ -75,7 +82,7 @@ class Varient {
 
   factory Varient.fromJson(Map<String, dynamic> json) => Varient(
     category: json["category"],
-    items: json["items"] == null ? [] : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
+    items: json["items"] == null ? [] : List<VarientItem>.from(json["items"]!.map((x) => VarientItem.fromJson(x))),
   );
 
   Map<String, dynamic> toJson() => {
@@ -84,16 +91,16 @@ class Varient {
   };
 }
 
-class Item {
+class VarientItem {
   final String? title;
   final String? description;
 
-  Item({
+  VarientItem({
     this.title,
     this.description,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory VarientItem.fromJson(Map<String, dynamic> json) => VarientItem(
     title: json["title"],
     description: json["description"],
   );

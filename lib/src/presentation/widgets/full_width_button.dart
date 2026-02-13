@@ -9,6 +9,7 @@ class FullWidthButton extends StatelessWidget {
     this.textColor,
     required this.buttonText,
     this.buttonChild,
+    this.textStyle
   });
 
   final void Function()? onTap;
@@ -16,6 +17,8 @@ class FullWidthButton extends StatelessWidget {
   final Color? textColor;
   final String buttonText;
   final Widget? buttonChild;
+  final TextStyle? textStyle;
+
 
   @override
   Widget build(BuildContext context) {

@@ -14,4 +14,11 @@ final class BrandFetchSuccess extends BrandState {
   List<Object> get props => [brands];
 }
 
-final class BrandFetchFailure extends BrandState {}
+final class BrandFetchFailure extends BrandState {
+  final String message;
+
+  BrandFetchFailure(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

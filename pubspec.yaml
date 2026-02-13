@@ -58,6 +58,10 @@ dependencies:
   bottom_navigation_bar: ^1.0.1
   shared_preferences: ^2.5.4
   cached_network_image: ^3.4.1
+  shimmer: ^3.0.0
+  readmore: ^3.0.0
+  flutter_rating_bar: ^4.0.1
+  lottie: ^3.3.2
 
 
 
@@ -87,6 +91,7 @@ flutter:
   assets:
     - assets/icons/
     - assets/images/
+    - assets/anim/
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg

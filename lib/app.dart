@@ -14,7 +14,9 @@ class BlocEcommerceApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiRepositoryProvider(
       providers: [
-        RepositoryProvider(create: (context) => AuthRepository())
+        RepositoryProvider(create: (context) => AuthRepository()),
+        RepositoryProvider(create: (context) => StoreRepository()),
+        RepositoryProvider(create: (context) => ProductRepository()),
       ],
       child: MultiBlocProvider(
         providers: [
@@ -22,6 +24,10 @@ class BlocEcommerceApp extends StatelessWidget {
           BlocProvider(create: (context) => RememberSwitchCubit()),
           BlocProvider(create: (context) => LoginBloc(context.read<AuthRepository>())),
           BlocProvider(create: (context) => SignupBloc(context.read<AuthRepository>())),
+          BlocProvider(create: (context) => BrandBloc(context.read<StoreRepository>())..add(FetchBrands())),
+          BlocProvider(create: (context) => ProductBloc(context.read<ProductRepository>())..add(FetchProducts())),
+          BlocProvider(create: (context) => CategoryBloc(context.read<StoreRepository>())),
+
         ],
         child: ScreenUtilInit(
           designSize: const Size(360, 690),

@@ -10,7 +10,7 @@ class SplashCubit extends Cubit<SplashState> {
   StoreRepository repository = StoreRepository();
 
   void startSplash() async{
-    await repository.fetchBrands();
+    // await repository.fetchBrands();
     Future.delayed(const Duration(seconds: 2), (){
       emit(SplashEnd());
     });

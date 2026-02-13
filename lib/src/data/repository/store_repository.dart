@@ -1,9 +1,9 @@
 import 'package:bloc_app/src/data/dummy/dummy_brands.dart';
-import 'package:bloc_app/src/data/dummy/dummy_products.dart';
-import 'package:bloc_app/src/data/models/brand_model.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:supabase_flutter/supabase_flutter.dart' as product;
+
+import '../models/models.dart';
+
+
 
 class StoreRepository {
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
@@ -20,24 +20,47 @@ class StoreRepository {
     }
   }
 
-  Future<void> createProducts() async {
+  // Future<void> createProducts() async {
+  //   try {
+  //     for (var product in dummyProduct) {
+  //       await _firestore
+  //           .collection('products')
+  //           .add(product.toJson()); //must be same in firebase
+  //     }
+  //   } catch (e) {
+  //     throw Exception(e);
+  //   }
+  // }
+
+  Future<List<BrandModel>> fetchBrands() async {
+    final List<BrandModel> brandList = [];
+    final brandsSnapshot = await _firestore.collection('brands').get();
+
+    try{
+      for (var brand in brandsSnapshot.docs) {
+        brandList.add(BrandModel.fromJson(brand.data()));
+      }
+    }catch(e){
+      throw Exception(e);
+    }
+
+    return brandList;
+  }
+
+  Future<CategoryModel?> fetchSingleCategory(String categoryId)async{
+
     try {
-      for (var product in dummyProduct) {
-        await _firestore
-            .collection('products')
-            .add(product.toJson()); //must be same in firebase
+      final data = await _firestore.collection("category").doc(categoryId).get();
+      if(data.data() != null){
+        final category = CategoryModel.fromJson(data.data()!);
+        return category;
+      }
+      else {
+        return null;
       }
     } catch (e) {
       throw Exception(e);
     }
-  }
 
-  Future<void> fetchBrands() async {
-    final List<BrandModel> brandList = [];
-    final brandsSnapshot = await _firestore.collection('brands').get();
-
-    for (var brand in brandsSnapshot.docs) {
-      brandList.add(BrandModel.fromJson(brand.data()));
-    }
   }
 }
