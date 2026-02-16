@@ -1,3 +1,4 @@
+import 'package:bloc_app/src/routes/route_pages.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -178,8 +179,8 @@ class ProductDetailsScreen extends StatelessWidget {
                       children: [
                         ElevatedButton(
                           onPressed: (){
-                            // final id = state.product.productId;
-                            // context.pushNamed(Routes.ADD_REVEIW, extra: {'id':id});
+                            final id = state.product.productId;
+                            context.pushNamed(Routes.ADD_REVEIW, extra: {'id':id});
                           },
                           style: ButtonStyle(
                             backgroundColor: MaterialStatePropertyAll(
@@ -248,26 +249,26 @@ class ProductDetailsScreen extends StatelessWidget {
                 fontWeight: FontWeight.w300,
               ),
             ),
-            // trailing: BlocBuilder<ProductBloc, ProductState>(
-            //     builder: (context, state) {
-            //       final double vat = state is ProductLoadSuccess
-            //           ? state.product.vatSd ?? 0.0
-            //           : 0.0;
-            //       debugPrint('Vat $vat');
-            //       final double price = state is ProductLoadSuccess
-            //           ? state.product.productPrice ?? 0.0
-            //           : 0.0;
-            //       debugPrint('Vat $price');
-            //       final double totalPrice = vat + price;
-            //       debugPrint('Vat $totalPrice');
-            //       return Text(
-            //         '\$${totalPrice.toStringAsFixed(2)}',
-            //         style: theme.textTheme.labelLarge?.copyWith(
-            //           color: theme.colorScheme.onSurfaceVariant,
-            //           fontWeight: FontWeight.w900,
-            //         ),
-            //       );
-            //     }),
+            trailing: BlocBuilder<ProductBloc, ProductState>(
+                builder: (context, state) {
+                  final double vat = state is ProductLoadSuccess
+                      ? state.product.vatSd ?? 0.0
+                      : 0.0;
+                  debugPrint('Vat $vat');
+                  final double price = state is ProductLoadSuccess
+                      ? state.product.productPrice ?? 0.0
+                      : 0.0;
+                  debugPrint('Vat $price');
+                  final double totalPrice = vat + price;
+                  debugPrint('Vat $totalPrice');
+                  return Text(
+                    '\$${totalPrice.toStringAsFixed(2)}',
+                    style: theme.textTheme.labelLarge?.copyWith(
+                      color: theme.colorScheme.onSurfaceVariant,
+                      fontWeight: FontWeight.w900,
+                    ),
+                  );
+                }),
           ),
           FullWidthButton(
             buttonText: 'Add to Cart',

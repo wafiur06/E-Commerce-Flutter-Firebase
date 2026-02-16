@@ -1,3 +1,4 @@
+import 'package:bloc_app/src/presentation/screens/add_reveiw_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
@@ -54,6 +55,18 @@ class RoutePages {
           name: Routes.PRODUCT_DETAILS_ROUTE,
           pageBuilder: (context, state) =>
           const MaterialPage(child: ProductDetailsScreen())),
+      GoRoute(
+          path: Routes.ADD_REVEIW,
+          name: Routes.ADD_REVEIW,
+          pageBuilder: (context, state) {
+            final obj = state.extra as Map;
+            print(obj);
+            return MaterialPage(
+                child: AddReveiwScreen(
+                  id: obj['id'],
+                ));
+          }),
+
 
       ShellRoute(
         builder: (context, state, child) => Wrapper(child: child),

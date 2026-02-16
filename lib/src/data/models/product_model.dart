@@ -13,7 +13,7 @@ class ProductModel {
   final String? productDetails;
   final String? brand;
   final String? categoryId;
-  // final double? vatSd;
+  final double? vatSd;
 
   ProductModel({
     required this.productId,
@@ -24,7 +24,7 @@ class ProductModel {
     this.productDetails,
     this.brand,
     this.categoryId,
-    // this.vatSd
+    this.vatSd
   });
 
   factory ProductModel.fromJson(Map<String, dynamic> json) => ProductModel(
@@ -36,7 +36,7 @@ class ProductModel {
       productDetails: json["product_details"],
       brand: json["brand"],
       categoryId: json["category_id"],
-      // vatSd: json['vat_sd'].toDouble()
+      vatSd: json['vat_sd'].toDouble()
   );
 
   Map<String, dynamic> toJson() => {
@@ -47,7 +47,7 @@ class ProductModel {
     "product_details": productDetails,
     "brand": brand,
     "category_id": categoryId,
-    // "vat_sd": vatSd
+    "vat_sd": vatSd
   };
 }
 
