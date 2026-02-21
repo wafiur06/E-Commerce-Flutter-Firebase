@@ -1,9 +1,8 @@
-import 'package:bloc_app/src/presentation/screens/add_reveiw_screen.dart';
+
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 
 import '../data/services/auth_service.dart';
-import '../presentation/screens/product_details_screen.dart';
 import '../presentation/screens/screens.dart';
 
 part 'routes.dart';
@@ -66,6 +65,11 @@ class RoutePages {
                   id: obj['id'],
                 ));
           }),
+      GoRoute(
+          path: Routes.EXPLORE_REVEIWS,
+          name: Routes.EXPLORE_REVEIWS,
+          pageBuilder: (context, state) =>
+          const MaterialPage(child: ExploreReveiwsScreen())),
 
 
       ShellRoute(

@@ -157,6 +157,7 @@ class HomeScreen extends StatelessWidget {
                         itemBuilder: (context, index) => ProductCard(
                           onItemTap: () {
                             context.read<ProductBloc>().add(FetchSingleProduct(state.products[index].productId));
+                            context.read<RatingBloc>().add(FetchProductReview(state.products[index].productId));
                             context.read<CategoryBloc>().add(FetchSingleCategory(state.products[index].categoryId ?? ''));
                             context.pushNamed(Routes.PRODUCT_DETAILS_ROUTE);
                           },

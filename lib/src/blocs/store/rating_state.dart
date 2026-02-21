@@ -23,3 +23,20 @@ final class RatingSubmitfailed extends RatingState {
   List<Object> get props => [message];
 }
 
+final class ReviewFetchSuccess extends RatingState {
+  final List<ReviewModel> reviews;
+
+  ReviewFetchSuccess(this.reviews);
+
+  @override
+  List<Object> get props => [reviews];
+}
+
+final class ReviewFetchFailed extends RatingState {
+  final String message;
+
+  const ReviewFetchFailed(this.message);
+
+  @override
+  List<Object> get props => [message];
+}

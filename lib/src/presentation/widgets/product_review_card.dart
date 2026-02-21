@@ -27,6 +27,7 @@ class ProductReviewCard extends StatelessWidget {
     final theme = Theme.of(context);
     return Column(
       mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         ListTile(
           leading: CircleAvatar(

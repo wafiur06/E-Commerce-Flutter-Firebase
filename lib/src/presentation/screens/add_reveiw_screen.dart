@@ -10,6 +10,7 @@ import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../routes/route_pages.dart';
 import '../../utils/asset_manager.dart';
 
 class AddReveiwScreen extends StatelessWidget {
@@ -130,6 +131,10 @@ class AddReveiwScreen extends StatelessWidget {
                 backgroundColor: Colors.green,
               ),
             );
+
+            Future.delayed(const Duration(seconds: 2,), (){
+              context.pushReplacement(Routes.EXPLORE_REVEIWS);
+            });
           }
           if (state is RatingSubmitfailed) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -151,7 +156,7 @@ class AddReveiwScreen extends StatelessWidget {
           return FullWidthButton(
             onTap: () => state is RatingInitial
                 ? context.read<RatingBloc>().add(
-                    SubmitReview(state.reviewController.text),
+                    SubmitReview(state.reviewController.text, id),
                   )
                 : null,
             buttonChild: state is RatingLoading

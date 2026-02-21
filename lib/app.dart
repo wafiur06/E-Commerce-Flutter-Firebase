@@ -27,7 +27,7 @@ class BlocEcommerceApp extends StatelessWidget {
           BlocProvider(create: (context) => BrandBloc(context.read<StoreRepository>())..add(FetchBrands())),
           BlocProvider(create: (context) => ProductBloc(context.read<ProductRepository>())..add(FetchProducts())),
           BlocProvider(create: (context) => CategoryBloc(context.read<StoreRepository>())),
-          BlocProvider(create: (context) => RatingBloc()),
+          BlocProvider(create: (context) => RatingBloc(context.read<ProductRepository>())),
 
         ],
         child: ScreenUtilInit(
