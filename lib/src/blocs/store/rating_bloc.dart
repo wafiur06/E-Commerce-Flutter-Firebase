@@ -1,8 +1,11 @@
+import 'dart:io';
+
 import 'package:bloc/bloc.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:equatable/equatable.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:meta/meta.dart';
 
 import '../../data/models/models.dart';
@@ -13,12 +16,21 @@ part 'rating_state.dart';
 
 class RatingBloc extends Bloc<RatingEvent, RatingState> {
   double rating = 0.0;
+  List<File> selectedReviewImage =[];
   final ProductRepository repository;
 
 
   RatingBloc(this.repository) : super(RatingInitial()) {
+
+
     on<UpdateRatingPoint>((event, emit) {
       rating = event.rating;
+      // Pass the existing controller and images to the next state
+      emit(RatingPointChanged(
+        ratingPoint: rating,
+        reviewController: state.reviewController,
+        images: state.images,
+      ));
     });
 
     on<RequestAddReview> ((event, emit) {
@@ -28,7 +40,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     on<SubmitReview>((event, emit) async {
       emit(RatingLoading());
       final currentUser = FirebaseAuth.instance.currentUser;
-      
+
       final review = ReviewModel(
         userId: currentUser?.uid,
         userName: currentUser?.displayName,
@@ -48,7 +60,7 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
       }catch(e){
         emit(const RatingSubmitfailed("Internal Sarver Error"));
       }
-    
+
     });
 
     on<FetchProductReview>((event, emit) async {
@@ -61,5 +73,25 @@ class RatingBloc extends Bloc<RatingEvent, RatingState> {
     });
 
 
+    on<AddReviewPhoto>((event, emit) async {
+      await pickImage();
+
+      emit(ReviewPhotoAdded(selectedReviewImage));
+    });
+
+
+    on<RemoveReviewPhoto>((event, emit) async {
+      selectedReviewImage.removeAt(event.imageIndex);
+      emit(ReviewPhotoRemoved(selectedReviewImage));
+
+    });
+  }
+
+  Future<void> pickImage() async {
+    final ImagePicker picker = ImagePicker();
+    final imageFiles = await picker.pickMultiImage();
+    for(var xfile in imageFiles){
+      selectedReviewImage.add(File(xfile.path));
+    }
   }
 }

@@ -41,3 +41,16 @@ final class FetchProductReview extends RatingEvent {
   List<Object> get props => [productId];
 
 }
+
+final class AddReviewPhoto extends RatingEvent{}
+
+final class RemoveReviewPhoto extends RatingEvent{
+  final int imageIndex;
+
+  const RemoveReviewPhoto({required this.imageIndex});
+
+  @override
+  List<Object> get props => [imageIndex];
+
+}
+

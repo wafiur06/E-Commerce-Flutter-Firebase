@@ -182,15 +182,9 @@ class ProductDetailsScreen extends StatelessWidget {
                               (index) => ProductReviewCard(
                                 imageUrl: state.reviews[index].userProfilePic,
                                 name: state.reviews[index].userName,
-                                date: DateFormat(DateFormat.YEAR_MONTH_DAY)
-                                    .format(
-                                      DateTime.fromMillisecondsSinceEpoch(
-                                        state
-                                            .reviews[index]
-                                            .createdAt
-                                            .millisecondsSinceEpoch,
-                                      ),
-                                    ),
+                                date: DateFormat.yMMMMd().format(
+                                  state.reviews[index].createdAt.toDate(),
+                                ),
                                 ratingPoint: state.reviews[index].rating,
                                 review: state.reviews[index].review,
                               ),
@@ -198,6 +192,7 @@ class ProductDetailsScreen extends StatelessWidget {
                           : [],
                     ),
                   ),
+
 
                   Gap(10.h),
 

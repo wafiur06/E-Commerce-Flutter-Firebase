@@ -37,7 +37,11 @@ class ReviewModel {
     productId: json["productId"],
     review: json["review"],
     rating: json["rating"].toDouble(),
-    createdAt: json["createdAt"],
+    createdAt: json["createdAt"] is Timestamp
+        ? json["createdAt"]
+        : (json["createdAt"] is String
+        ? Timestamp.fromDate(DateTime.parse(json["createdAt"]))
+        : Timestamp.now()),
     image: json["image"] == null ? [] : List<Image>.from(json["image"]!.map((x) => Image.fromJson(x))),
 
   );

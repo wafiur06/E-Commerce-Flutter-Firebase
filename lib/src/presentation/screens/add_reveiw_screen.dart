@@ -1,15 +1,14 @@
-import 'package:bloc_app/src/blocs/blocs.dart';
 import 'package:bloc_app/src/presentation/widgets/full_width_button.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:gap/gap.dart';
 import 'package:go_router/go_router.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:lottie/lottie.dart';
 
+import '../../blocs/blocs.dart';
 import '../../routes/route_pages.dart';
 import '../../utils/asset_manager.dart';
 
@@ -38,7 +37,7 @@ class AddReveiwScreen extends StatelessWidget {
       ),
       body: BlocConsumer<RatingBloc, RatingState>(
         builder: (context, state) {
-          if (state is RatingInitial) {
+          if (state is RatingInitial || state is RatingPointChanged) {
             return SingleChildScrollView(
               padding: const EdgeInsets.all(10.0),
               child: Column(
@@ -98,7 +97,60 @@ class AddReveiwScreen extends StatelessWidget {
                             .read<RatingBloc>()
                             .add(UpdateRatingPoint(rating)),
                       ),
+                      BlocBuilder<RatingBloc, RatingState>(
+                        builder: (context, state) => Text(
+                          state is RatingPointChanged
+                              ? state.ratingPoint.toString()
+                              : context.read<RatingBloc>().rating.toString(),
+                          style: theme.textTheme.titleLarge?.copyWith(
+                            color: Colors.amber,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 35,
+                          ),
+                        ),
+                      ),
                     ],
+                  ),
+                  Gap(20.h),
+
+                  SizedBox(
+                    height: layout.size.height * 0.14,
+                    child: ListView.separated(
+                      scrollDirection: Axis.horizontal,
+                      itemCount: state is ReviewPhotoAdded
+                          ? state.images.length + 1
+                          : state is ReviewPhotoRemoved
+                          ? state.images.length + 1
+                          : context
+                                    .read<RatingBloc>()
+                                    .selectedReviewImage
+                                    .length +
+                                1,
+                      itemBuilder: (context, index) {
+                        if (index == 0) {
+                          return AspectRatio(
+                            aspectRatio: 3 / 3,
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: theme.colorScheme.surfaceVariant,
+                              ),
+                              child: Center(
+                                child: Icon(
+                                  Icons.add_a_photo,
+                                  color: theme.colorScheme.outline,
+                                ),
+                              ),
+                            ),
+                          );
+                        }
+                        return AspectRatio(
+                          aspectRatio: 3 / 3,
+                          child: Container(color: Colors.red),
+                        );
+                      },
+                      separatorBuilder: (context, index) => const Gap(8),
+                    ),
                   ),
                 ],
               ),
@@ -125,14 +177,17 @@ class AddReveiwScreen extends StatelessWidget {
           if (state is RatingSubmitSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
-                content: Text('Thanks for Submitting Review!', style: theme.textTheme.labelMedium?.copyWith(
-                  color: theme.colorScheme.onErrorContainer,
-                ),),
+                content: Text(
+                  'Thanks for Submitting Review!',
+                  style: theme.textTheme.labelMedium?.copyWith(
+                    color: theme.colorScheme.onErrorContainer,
+                  ),
+                ),
                 backgroundColor: Colors.green,
               ),
             );
 
-            Future.delayed(const Duration(seconds: 2,), (){
+            Future.delayed(const Duration(seconds: 2), () {
               context.pushReplacement(Routes.EXPLORE_REVEIWS);
             });
           }
@@ -156,7 +211,7 @@ class AddReveiwScreen extends StatelessWidget {
           return FullWidthButton(
             onTap: () => state is RatingInitial
                 ? context.read<RatingBloc>().add(
-                    SubmitReview(state.reviewController.text, id),
+                    SubmitReview(state.reviewController!.text, id),
                   )
                 : null,
             buttonChild: state is RatingLoading
