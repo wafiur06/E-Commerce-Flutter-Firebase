@@ -17,7 +17,7 @@ A modern, full-featured E-Commerce application built with **Flutter** and **Fire
 
 ## 🛠️ Tech Stack
 
-* **Frontend:** [Flutter](https://flutter.dev/) (Framework) / [Dart](https://dart.dev/) (Language)
+* **Frontend:** [Flutter](https://flutter.dev/) (BLoC State Management) / [Dart](https://dart.dev/) (Language)
 * **Backend:** [Firebase](https://firebase.google.com/)
     * **Authentication:** For user identity management.
     * **Cloud Firestore:** NoSQL database for products and user data.
